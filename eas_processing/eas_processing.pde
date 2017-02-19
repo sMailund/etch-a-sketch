@@ -31,8 +31,16 @@ void draw() {
     return;
   }
   
+  if (input[2] == 1) {
+    slettBilde();
+  }
+  
   tegnSkjerm(input[0], input[1]);
   
+}
+
+void slettBilde() {
+  background(0);
 }
 
 void tegnSkjerm(float posX, float posY) {
