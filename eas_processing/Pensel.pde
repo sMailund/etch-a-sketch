@@ -11,7 +11,6 @@ public class Pensel {
   public void tegn(float nyPosX, float nyPosY) {
     stroke(255);
     line(posX, posY, nyPosX, nyPosY);
-    println(posX - nyPosX);
     posX = nyPosX;
     posY = nyPosY;
   }

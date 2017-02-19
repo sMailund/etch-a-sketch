@@ -15,32 +15,52 @@ void setup() {
   //Sett opp for å motta info fra arduino-brettet
   String comNummer = "COM3"; 
   serialPort = new Serial(this, comNummer, 9600);
-  
+
   //Lag pensel
-  pensel = new Pensel(0, 0);
+  lagPensel();
+}
+
+void lagPensel() {
+  float[] input;
+  
+  //vent til det er input fra kontrolleren, tar ofte litt tid
+  while (true) {
+    try {
+      input = lesInput();
+      pensel = new Pensel(input[0], input[1]);
+      return;
+    } 
+    catch (BadInputException e) {
+      //println(e.getMessage());
+    }
+  }
 }
 
 void draw() {
-  
+
   //Les input
   float[] input;
   try {
-      input = lesInput();
-  } catch (BadInputException e) {
-    println(e.getMessage());
+    input = lesInput();
+  } 
+  catch (BadInputException e) {
+    //println(e.getMessage());
     return;
   }
-  
-  if (input[2] == 1) {
-    slettBilde();
-  }
-  
+
+  sjekkKnapp(input[2]);
+
   tegnSkjerm(input[0], input[1]);
-  
 }
 
-void slettBilde() {
-  background(0);
+void sjekkKnapp(float input) {
+  if (input == 1) {
+    background(0);
+  }
+}
+
+boolean harKontakt() {
+  return true;
 }
 
 void tegnSkjerm(float posX, float posY) {
@@ -63,15 +83,12 @@ float[] lesInput() throws BadInputException {
         //noen ganger mangler det deler av oppdelt
         if (oppdelt.length == 3) {
           float konvertert[] = konverterStringFloat(oppdelt);
-          println(oppdelt[0] + " | " + oppdelt[1] + " | " + oppdelt[2]);
           return konvertert;
-        } else {
-          throw new BadInputException("Input mangler deler");
         }
       }
     }
   }
-  
+
   //Kast feilmelding hvis metoden ikke har fått input etter n forsøk
   throw new BadInputException("Kunne ikke finne input");
 }
@@ -81,7 +98,7 @@ float[] konverterStringFloat(String[] in) {
   for (int i = 0; i < in.length; i++) {
     ut[i] = Float.parseFloat(in[i]);
   }
-  
+
   ut[0] = map(ut[0], 0, 1023, 0, width);
   ut[1] = map(ut[1], 0, 1023, 0, height);
   return ut;
@@ -90,7 +107,7 @@ float[] konverterStringFloat(String[] in) {
 
 //Feilmelding hvis input ikke kan leses
 class BadInputException extends Exception {
-    public BadInputException(String msg) {
-        super(msg);
-    }
+  public BadInputException(String msg) {
+    super(msg);
+  }
 }
