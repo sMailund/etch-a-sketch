@@ -1,22 +1,18 @@
 public class Pensel {
-  private float str;
   
   private float posX;
   private float posY;
   
-  public Pensel(float str, float posX, float posY) {
-    this.str = str;
+  public Pensel(float posX, float posY) {
     this.posX = posX;
     this.posY = posY;
   }
   
-  public void setPos(float posX, float posY) {
-    this.posX = posX;
-    this.posY = posY;
-  }
-  
-  public void tegn() {
-    fill(255);
-    rect(posX, posY, str, str);
+  public void tegn(float nyPosX, float nyPosY) {
+    stroke(255);
+    line(posX, posY, nyPosX, nyPosY);
+    println(posX - nyPosX);
+    posX = nyPosX;
+    posY = nyPosY;
   }
 }

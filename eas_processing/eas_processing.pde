@@ -17,7 +17,7 @@ void setup() {
   serialPort = new Serial(this, comNummer, 9600);
   
   //Lag pensel
-  pensel = new Pensel(5, 0, 0);
+  pensel = new Pensel(0, 0);
 }
 
 void draw() {
@@ -31,18 +31,12 @@ void draw() {
     return;
   }
   
-  brukInput(input);
-  tegnSkjerm();
+  tegnSkjerm(input[0], input[1]);
   
 }
 
-void tegnSkjerm() {
-  pensel.tegn();
-}
-
-void brukInput(float[] input) {
-  //flytt pensel
-  pensel.setPos(input[0], input[1]);
+void tegnSkjerm(float posX, float posY) {
+  pensel.tegn(posX, posY);
 }
 
 float[] lesInput() throws BadInputException {
@@ -77,12 +71,11 @@ float[] lesInput() throws BadInputException {
 float[] konverterStringFloat(String[] in) {
   float[] ut = new float[in.length];
   for (int i = 0; i < in.length; i++) {
-    print(i);
     ut[i] = Float.parseFloat(in[i]);
   }
   
-  ut[0] = map(ut[0], 0, width, 0, 1023);
-  ut[1] = map(ut[1], 0, width, 0, 1023);
+  ut[0] = map(ut[0], 0, 1023, 0, width);
+  ut[1] = map(ut[1], 0, 1023, 0, height);
   return ut;
 }
 
