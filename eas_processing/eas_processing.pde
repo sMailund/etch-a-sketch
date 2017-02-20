@@ -71,7 +71,6 @@ float[] lesInput() throws BadInputException {
   String[] oppdelt;
 
   //Let etter input helt til noe blir funnet
-  for (int i = 0; i < 1000; i++) {
     if (serialPort.available() > 0) {
       innData = serialPort.readStringUntil('\n');
 
@@ -87,7 +86,6 @@ float[] lesInput() throws BadInputException {
         }
       }
     }
-  }
 
   //Kast feilmelding hvis metoden ikke har fått input etter n forsøk
   throw new BadInputException("Kunne ikke finne input");
